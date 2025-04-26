@@ -12,82 +12,39 @@ public class Select {
                 return new HashMap<>();
             }
         }
-        String name="";
         HashMap<Integer,Integer> hm=new HashMap<>();
-        //如果x不是数字,由上面步骤规范x必定是商品id
+        //如果x不是数字,由上面步骤规范x必定是商品名
         if(!x.matches("\\d+")) {
-            name=x;
-            //先执行查询语句得到该商品的id
-            Connection conn= GetConn.getConnection();
-            String sql="select Product_id from product where Product_name=?";
-            PreparedStatement pstmt=conn.prepareStatement(sql);
-            pstmt.setString(1,x);
-            try {
-                ResultSet rs=pstmt.executeQuery();
-                if(!rs.next()){
-                    rs.close();
-                    pstmt.close();
-                    conn.close();
-                    return new HashMap<>();
-                }else {
-                    x = rs.getInt("Product_id")+"";
-                    rs.close();
-                }
-            } catch (Exception e){
-                System.out.println("查询订单细节失败");
-            } finally {
-                pstmt.close();
-                conn.close();
-            }
+            x=changeNametoid(x);
         }
-        //根据订单编号查询该订单的内容
-        if(findItem.equals("订单编号")){
-            Connection conn= GetConn.getConnection();
-            String sql="select * from product_order where Order_id=?";
-            PreparedStatement pstmt=conn.prepareStatement(sql);
-            pstmt.setString(1,x);
-            try {
-                ResultSet rs=pstmt.executeQuery();
-                while (rs.next()) {
-                    int pid = rs.getInt("Product_id");
-                    int oid= rs.getInt("Order_id");
-                    int num= rs.getInt("quantity");
-                    //System.out.println(pid + " " + oid + " " + num);
-                    hm.put(pid,num);
-                }
-                rs.close();
+        if(x.equals("-1")){
+            return new HashMap<>();
+        }
+
+        Connection conn= GetConn.getConnection();
+        String sql="select * from product_order where Order_id=?";//默认查询订单编号的细节
+        if (findItem.equals("商品编号")) sql="select * from product_order where Product_id=?";
+        PreparedStatement pstmt=conn.prepareStatement(sql);
+        pstmt.setString(1,x);
+        try {
+            ResultSet rs=pstmt.executeQuery();
+            while (rs.next()) {
+                int pid = rs.getInt("Product_id");
+                int oid= rs.getInt("Order_id");
+                int num= rs.getInt("quantity");
+                //System.out.println(pid + " " + oid + " " + num);
+                if (findItem.equals("商品编号")) hm.put(oid,num);
+                else hm.put(pid,num);
             }
-            catch (Exception e){
-                System.out.println("查询订单细节失败");
-            }
-            finally {
-                pstmt.close();
-                conn.close();
-            }
-        }   else if (findItem.equals("商品编号")) {
-            Connection conn= GetConn.getConnection();//根据商品编号或商品名称查询与该商品有关的内容
-            String sql="select * from product_order where Product_id=?";
-            PreparedStatement pstmt=conn.prepareStatement(sql);
-            pstmt.setString(1,x);
-            try {
-                ResultSet rs=pstmt.executeQuery();
-                //上面步骤已经保证商品存在
-                while (rs.next()) {
-                    int pid = rs.getInt("Product_id");
-                    int oid = rs.getInt("Order_id");
-                    int num = rs.getInt("quantity");
-                    //System.out.println(pid + " " + oid + " " + num);
-                    hm.put(oid,num);
-                }
-                rs.close();
-            }
-            catch (Exception e){
-                System.out.println("查询订单细节失败");
-            }
-            finally {
-                pstmt.close();
-                conn.close();
-            }
+            rs.close();
+        }
+        catch (Exception e){
+            System.out.println("查询订单细节失败");
+            throw new MyfunctionException();
+        }
+        finally {
+            pstmt.close();
+            conn.close();
         }
         return hm;
     }
@@ -106,7 +63,6 @@ public class Select {
                 int id = rs.getInt("Order_id");
                 Double price= rs.getDouble("Order_price");
                 Date date= rs.getDate("Order_date");
-                //System.out.println(id + " " + date + " " + price);
                 item.setOrder_id(id+"");
                 item.setOrder_date(date+"");
                 item.setOrder_price(price+"");
@@ -122,6 +78,7 @@ public class Select {
             }
         } catch (Exception e){
             System.out.println("查询订单失败");
+            throw new MyfunctionException();
         } finally {
             pstmt.close();
             conn1.close();
@@ -133,11 +90,8 @@ public class Select {
     public static Product selectProduct(String pname) throws SQLException, ClassNotFoundException {
         Product item=new Product();
         Connection conn1= GetConn.getConnection();
-
         String sql="select * from product where Product_Name=?";
-        if(pname.matches("\\d+")){
-            sql="select * from product where Product_id=?";
-        }
+        if(pname.matches("\\d+")) sql="select * from product where Product_id=?";
         PreparedStatement pstmt=conn1.prepareStatement(sql);
         pstmt.setString(1,pname);
         try {
@@ -154,17 +108,40 @@ public class Select {
                 rs.close();
             }else{
                 System.out.println("没有商品"+pname);
-                rs.close();
-                pstmt.close();
-                conn1.close();
-                return new Product();
             }
         } catch (Exception e){
             System.out.println("查询商品失败");
+            throw new MyfunctionException();
         } finally {
             pstmt.close();
             conn1.close();
         }
         return item;
+    }
+
+    public static String changeNametoid(String name) throws SQLException, ClassNotFoundException {
+        int id=-1;
+        Connection conn= GetConn.getConnection();
+        String sql="select Product_id from product where Product_Name=?";
+        PreparedStatement pstmt=conn.prepareStatement(sql);
+        pstmt.setString(1,name);
+        try {
+            ResultSet rs=pstmt.executeQuery();
+            if(!rs.next()){
+                rs.close();
+                pstmt.close();
+                conn.close();
+            }else {
+                id = rs.getInt("Product_id");
+                rs.close();
+            }
+        } catch (Exception e){
+            System.out.println("查询商品编号失败");
+            throw new MyfunctionException();
+        } finally {
+            pstmt.close();
+            conn.close();
+        }
+        return id+"";
     }
 }

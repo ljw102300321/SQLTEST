@@ -34,16 +34,16 @@ public class Insert {
             if (rs.next()) {
                 pprice= rs.getDouble("Product_Price");
             }
-            insertProductorder(sql1,Integer.parseInt(pid1),oid1,quantity1);
-            updateProduct(sql2,quantity1, Integer.parseInt(pid1));
-
-            updateOrderprice(sql3,quantity1,pprice,oid1);
+            insertProductorder(sql1,Integer.parseInt(pid1),oid1,quantity1);//执行sql1
+            updateProduct(sql2,quantity1, Integer.parseInt(pid1));//执行sql2
+            updateOrderprice(sql3,quantity1,pprice,oid1);//执行sql3
             conn.commit();
             System.out.println("插入订单成功");
         }
         catch (Exception e){
             System.out.println(" 插入订单出错");
             conn.rollback();
+            throw new MyfunctionException();
         }
         finally {
             conn.close();
@@ -90,6 +90,7 @@ public class Insert {
        catch (Exception e){
            System.out.println(" 插入订单出错");
            conn.rollback();
+           throw new MyfunctionException();
        }
        finally {
            conn.close();
@@ -97,14 +98,12 @@ public class Insert {
     }
 
     public static void insertProduct(String s1) throws ClassNotFoundException, SQLException {
-
         Pattern pattern = Pattern.compile("商品名称：(.*) 商品编号：(.*) 商品价格：(.*) 商品库存：(.*)");
         Matcher matcher = pattern.matcher(s1);
         String name1="";
         int id1=-1;
         double price1=-1;
         int stock1=-1;
-
         if (matcher.find()) {
             name1=matcher.group(1);
             id1=Integer.parseInt(matcher.group(2));
@@ -112,14 +111,12 @@ public class Insert {
             stock1=Integer.parseInt(matcher.group(4));
         }
         Connection conn= GetConn.getConnection();
-        //String sql="insert into product values("+id1+", \'"+name1+"\' , "+price1+", "+stock1+")";
         String sql="insert into product values(?,?,?,?)";
         PreparedStatement pstmt=conn.prepareStatement(sql);
         pstmt.setInt(1,id1);
         pstmt.setString(2,name1);
         pstmt.setDouble(3,price1);
         pstmt.setInt(4,stock1);
-
         try{
             conn.setAutoCommit(false);
             pstmt.executeUpdate();
@@ -129,6 +126,7 @@ public class Insert {
         catch (Exception e){
             System.out.println("插入新商品失败");
             conn.rollback();
+            throw new MyfunctionException();
         }
         finally {
             pstmt.close();
@@ -146,7 +144,7 @@ public class Insert {
             pstmt.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            throw new MyfunctionException();
         }
         finally {
             pstmt.close();
@@ -163,7 +161,7 @@ public class Insert {
             pstmt.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            throw new MyfunctionException();
         }
         finally {
             pstmt.close();
@@ -181,14 +179,14 @@ public class Insert {
             pstmt.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            throw new MyfunctionException();
         }
         finally {
             pstmt.close();
             conn.close();
         }
-
     }
+
     public static void insertOrder1(String sql,String id1,String date1,String price1) throws SQLException, ClassNotFoundException {
         //String sql1="insert into order1 values(?,?,?)";
         Connection conn = GetConn.getConnection();
@@ -200,18 +198,18 @@ public class Insert {
             pstmt.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            throw new MyfunctionException();
         }
         finally {
             pstmt.close();
             conn.close();
         }
     }
+
     public static int getPid(String sql,String pname) throws SQLException, ClassNotFoundException {
         //String sql = "select Product_id from product where Product_Name=?";
         int pid=-1;
         Connection conn = GetConn.getConnection();
-
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,pname);
         try {
@@ -220,13 +218,12 @@ public class Insert {
                 pid=rs.getInt("Product_id");
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MyfunctionException();
         } finally {
             pstmt.close();
             conn.close();
-            return pid;
         }
-
+        return pid;
     }
 }
 

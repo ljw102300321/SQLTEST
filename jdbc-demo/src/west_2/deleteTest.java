@@ -13,6 +13,11 @@ public class deleteTest {
         //存在且不在订单中，返回1
         int z=Delete.deleteProduct("橘子");
         System.out.println(z);
+        //
+        int a=Delete.deleteOrder(1);
+        System.out.println(a);
+        int b=Delete.deleteOrder(2);
+        System.out.println(b);
 
     }
 }

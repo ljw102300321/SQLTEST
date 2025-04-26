@@ -14,7 +14,6 @@ public class Update {
         int stock=0;
         String pid="x";
         double price=0;
-
         String sql1="select product_id,Product_Price from product where product_Name=?";
         String sql2="update product_order set quantity=quantity+? where Order_id=? and Product_id=?";//默认是增加
         String sql3="update order1 set Order_price=Order_price+? where Order_id=?";//默认是增加
@@ -22,11 +21,11 @@ public class Update {
             sql2="update product_order set quantity=quantity-? where Order_id=? and Product_id=?";
             sql3="update order1 set Order_price=Order_price-? where Order_id=?";//默认是增加
         }
-        Connection conn1= GetConn.getConnection();
-        PreparedStatement pstmt1=conn1.prepareStatement(sql1);
+        Connection conn= GetConn.getConnection();
+        PreparedStatement pstmt1=conn.prepareStatement(sql1);
         pstmt1.setString(1,pname);
         try {
-            conn1.setAutoCommit(false);
+            conn.setAutoCommit(false);
             ResultSet rs=pstmt1.executeQuery();
             if(rs.next()) {
                 pid= rs.getString("product_id");
@@ -35,22 +34,22 @@ public class Update {
             rs.close();
             updateOrderprice(sql3,price,num,oid);//执行sql3
             updateQuantity(sql2,num,oid,pid);//执行sql2
-            if(func.equals("decrease")){
-                updateStock(pname,num,"increase");
-            }else{
-                updateStock(pname,num,"decrease");
-            }
-            conn1.commit();
+            if(func.equals("decrease")) updateStock(pname,num,"increase");//更改库存
+            else updateStock(pname,num,"decrease");
+
+            conn.commit();
             }
         catch (Exception e){
-            conn1.rollback();
+            conn.rollback();
             System.out.println("更新商品需求失败");
+            throw new MyfunctionException();
         }
         finally {
             pstmt1.close();
-            conn1.close();
+            conn.close();
         }
     }
+
     public static void updateQuantity(String sql,int num,int oid,String pid) throws SQLException, ClassNotFoundException {
         String sql2="update product_order set quantity=quantity+? where Order_id=? and Product_id=-?";//默认是增加
         Connection conn= GetConn.getConnection();
@@ -62,7 +61,7 @@ public class Update {
             pstmt.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException();
+            throw new MyfunctionException();
         }
         finally {
             pstmt.close();
@@ -79,7 +78,7 @@ public class Update {
             pstmt.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException();
+            throw new MyfunctionException();
         }
         finally {
             pstmt.close();
@@ -87,40 +86,41 @@ public class Update {
         }
     }
 
+
     public static void updateStock(String pname,int num,String func) throws SQLException, ClassNotFoundException {//pname指要改变的商品名，num表示要添加或减少的库存数
         //默认增加
         String pid="x";
-        Connection conn1= GetConn.getConnection();
+        Connection conn= GetConn.getConnection();
         String sql1="select Product_id from product where Product_Name=?";
         String sql2="update product set Product_Stock=Product_Stock+? where Product_id=?";
         if(func.equals("decrease"))
         sql2="update product set Product_Stock=Product_Stock-? where Product_id=?";
         else if(func.equals("set"))
         sql2="update product set Product_Stock=? where Product_id=?";
-
-        PreparedStatement pstmt1=conn1.prepareStatement(sql1);
+        PreparedStatement pstmt1=conn.prepareStatement(sql1);
         pstmt1.setString(1,pname);
         try {
-            conn1.setAutoCommit(false);
+            conn.setAutoCommit(false);
             ResultSet rs=pstmt1.executeQuery();
             if(rs.next()) {
                 pid= rs.getString("product_id");
             }
             rs.close();
-
             updateProductstock(sql2,num,pid);//执行sql2
-            conn1.commit();
+            conn.commit();
             System.out.println("更新商品库存成功");
         }
         catch (Exception e){
-            conn1.rollback();
+            conn.rollback();
             System.out.println("更新商品库存失败");
+            throw new MyfunctionException();
         }
         finally {
             pstmt1.close();
-            conn1.close();
+            conn.close();
         }
     }
+
     public static void updateProductstock(String sql,int num,String pid) throws SQLException, ClassNotFoundException {
         //String sql2="update product set Product_Stock=Product_Stock+? where Product_id=?";
         Connection conn= GetConn.getConnection();
@@ -131,7 +131,7 @@ public class Update {
             pstmt.executeUpdate();
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            throw new MyfunctionException();
         }
         finally {
             pstmt.close();

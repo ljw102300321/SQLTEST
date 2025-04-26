@@ -18,66 +18,34 @@ public class Order {
         this.hm = hm;
     }
 
-    /**
-     * 获取
-     * @return order_id
-     */
     public String getOrder_id() {
         return order_id;
     }
 
-    /**
-     * 设置
-     * @param order_id
-     */
     public void setOrder_id(String order_id) {
         this.order_id = order_id;
     }
 
-    /**
-     * 获取
-     * @return order_date
-     */
     public String getOrder_date() {
         return order_date;
     }
 
-    /**
-     * 设置
-     * @param order_date
-     */
     public void setOrder_date(String order_date) {
         this.order_date = order_date;
     }
 
-    /**
-     * 获取
-     * @return order_price
-     */
     public String getOrder_price() {
         return order_price;
     }
 
-    /**
-     * 设置
-     * @param order_price
-     */
     public void setOrder_price(String order_price) {
         this.order_price = order_price;
     }
 
-    /**
-     * 获取
-     * @return hm
-     */
     public HashMap<Integer, Integer> getHm() {
         return hm;
     }
 
-    /**
-     * 设置
-     * @param hm
-     */
     public void setHm(HashMap<Integer, Integer> hm) {
         this.hm = hm;
     }
@@ -96,9 +64,6 @@ public class Order {
            sb.append("Product_id = " +Product_id  +", Product_quantity = "+quantity+ " ");
        }
    }
-
-
-
         return "Order{order_id = " + order_id + ", order_date = " + order_date + ", order_price = " + order_price + " "+sb.toString()+ "}";
     }
 
