@@ -1,8 +1,11 @@
 package west_2;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
-
+import java.sql.*;
 public class Select {
 
     public static HashMap<Integer,Integer> selectProductorder(String findItem, String x) throws SQLException, ClassNotFoundException{

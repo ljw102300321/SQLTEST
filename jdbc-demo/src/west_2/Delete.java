@@ -1,7 +1,11 @@
 package west_2;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.sql.*;
-
 public class Delete {
 
     public static int deleteOrder(int Oid) throws ClassNotFoundException, SQLException {
