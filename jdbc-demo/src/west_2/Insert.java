@@ -27,15 +27,14 @@ public class Insert {
         String sql3="update order1 set Order_price=Order_price+? where Order_id=?";
         PreparedStatement pstmt0=conn.prepareStatement(sql0);
 
-        try{
+        try(ResultSet rs=pstmt0.executeQuery()){
             conn.setAutoCommit(false);
             pstmt0.setString(1,pid1);
-            ResultSet rs=pstmt0.executeQuery();
             double pprice=0;
             if (rs.next()) {
                 pprice= rs.getDouble("Product_Price");
             }
-            insertProductorder(sql1,Integer.parseInt(pid1),oid1,quantity1);//执行sql1
+            insertPo(sql1,Integer.parseInt(pid1),oid1,quantity1);//执行sql1
             updateProduct(sql2,quantity1, Integer.parseInt(pid1));//执行sql2
             updateOrderprice(sql3,quantity1,pprice,oid1);//执行sql3
             conn.commit();
@@ -81,7 +80,7 @@ public class Insert {
            for(String name:orderItem.keySet()){
                int pid1=getPid(sql2,name);//执行sql2
                String quantity1=orderItem.get(name);
-               insertProductorder(sql3,pid1,id1,quantity1);//执行sql3
+               insertPo(sql3,pid1,id1,quantity1);//执行sql3
                updateProduct(sql4,quantity1,pid1);//执行sql4
            }
            conn.commit();
@@ -168,7 +167,7 @@ public class Insert {
             conn.close();
         }
     }
-    public static void insertProductorder(String sql,int pid1,String id1,String quantity1) throws SQLException, ClassNotFoundException {
+    public static void insertPo(String sql,int pid1,String id1,String quantity1) throws SQLException, ClassNotFoundException {
         //String sql3="insert into product_order values(?,?,?)";
         Connection conn = GetConn.getConnection();
         PreparedStatement pstmt=conn.prepareStatement(sql);
