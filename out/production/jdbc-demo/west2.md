@@ -72,8 +72,11 @@ create table product_order (<br>
 Product_id int not null comment '商品编号',<br>
 Order_id int not null comment '订单编号',<br>
 quantity int not null comment '商品需求',<br>
+primary key (Product_id, Order_id),<br>
 foreign key (Product_id) references product(Product_id),<br>
 foreign key (Order_id) references order1(Order_id)<br>
+on delete cascade<br>
+ON update cascade<br>
 )comment '商品-订单表';
 
 ## 为部分属性添加check约束或not null约束

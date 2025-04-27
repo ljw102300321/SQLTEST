@@ -1,7 +1,9 @@
 package west_2;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +20,12 @@ public class insertOrderTest {
                 "购买数量：5\n" +
                 "订单时间：2025-4-21\n" +
                 "订单总价：75元";
-        Insert.insertOrder(s1);
+        try{
+            Insert.insertOrder(s1);
+        }catch (Exception e){
+
+        }
+
 
         //重复插入订单，无法插入
        String s2="订单编号：1\n" +
@@ -30,8 +37,12 @@ public class insertOrderTest {
                 "购买数量：5\n" +
                 "订单时间：2025-4-21\n" +
                 "订单总价：75元";
-        Insert.insertOrder(s2);
 
+        try{
+            Insert.insertOrder(s2);
+        }catch (Exception e){
+
+        }
 
         //插入的订单中有不存在的商品，无法插入
         String s3="订单编号：2\n" +
@@ -43,8 +54,12 @@ public class insertOrderTest {
                 "购买数量：5\n" +
                 "订单时间：2025-4-21\n" +
                 "订单总价：75元";
-        Insert.insertOrder(s3);
 
+        try{
+            Insert.insertOrder(s3);
+        }catch (Exception e){
+
+        }
         //将不存在的商品删除后
        String s4="订单编号：2\n" +
                 "商品名称：梨\n" +
@@ -53,8 +68,12 @@ public class insertOrderTest {
                 "购买数量：5\n" +
                 "订单时间：2025-4-21\n" +
                 "订单总价：25元";
-        Insert.insertOrder(s4);
 
+        try{
+            Insert.insertOrder(s4);
+        }catch (Exception e){
+
+        }
         //购买数量小于0，无法插入
         String s5="订单编号：3\n" +
                 "商品名称：梨\n" +
@@ -63,8 +82,12 @@ public class insertOrderTest {
                 "购买数量：-5\n" +
                 "订单时间：2025-4-21\n" +
                 "订单总价：25元";
-        Insert.insertOrder(s5);
 
+        try{
+            Insert.insertOrder(s5);
+        }catch (Exception e){
+
+        }
         String s6="订单编号：3\n" +
                 "商品名称：梨\n" +
                 "购买数量：1\n" +
@@ -72,8 +95,12 @@ public class insertOrderTest {
                 "购买数量：5\n" +
                 "订单时间：2025-4-21\n" +
                 "订单总价：25元";
-        Insert.insertOrder(s6);
 
+        try{
+            Insert.insertOrder(s6);
+        }catch (Exception e){
+
+        }
         //订单总价不能小于0
         String s7="订单编号：4\n" +
                 "商品名称：梨\n" +
@@ -82,8 +109,12 @@ public class insertOrderTest {
                 "购买数量：5\n" +
                 "订单时间：2025-4-21\n" +
                 "订单总价：-1元";
-        Insert.insertOrder(s7);
 
+        try{
+            Insert.insertOrder(s7);
+        }catch (Exception e){
+
+        }
 
 
         String s8="订单编号：4\n" +
@@ -93,7 +124,11 @@ public class insertOrderTest {
                 "购买数量：5\n" +
                 "订单时间：2025-4-21\n" +
                 "订单总价：10元";
-        Insert.insertOrder(s8);
-    }
 
+        try{
+            Insert.insertOrder(s8);
+        }catch (Exception e){
+
+        }
+    }
 }

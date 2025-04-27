@@ -198,6 +198,7 @@ public class Insert {
         pstmt.setString(2,date1);
         pstmt.setString(3,price1);
         try{
+
             pstmt.executeUpdate();
         }
         catch (Exception e){
