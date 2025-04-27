@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.sql.*;
 public class Delete {
 
     public static int deleteOrder(int Oid) throws ClassNotFoundException, SQLException {
@@ -99,7 +97,7 @@ public class Delete {
                 return true;//说明这个商品在订单中，无法删除
             }
         }catch (Exception e){
-
+            throw new MyfunctionException();
         }finally {
             pstmt.close();
             conn.close();

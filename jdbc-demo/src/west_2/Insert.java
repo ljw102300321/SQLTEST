@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.sql.*;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,7 +65,6 @@ public class Insert {
             if("".equals(price1)&&matcher.group(3)!=null)
                 price1=matcher.group(3);
         }//存储订单数据
-        ;
         HashMap<String,String> orderItem=new HashMap<>();//用来存储订单中的商品细节
         Pattern p = Pattern.compile("商品名称：(.*)\\n购买数量：(.*)");
         Matcher m = p.matcher(s1);
