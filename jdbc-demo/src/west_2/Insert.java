@@ -198,7 +198,6 @@ public class Insert {
         pstmt.setString(2,date1);
         pstmt.setString(3,price1);
         try{
-
             pstmt.executeUpdate();
         }
         catch (Exception e){
@@ -216,8 +215,7 @@ public class Insert {
         Connection conn = GetConn.getConnection();
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,pname);
-        try {
-            ResultSet rs = pstmt.executeQuery();
+        try(ResultSet rs = pstmt.executeQuery()) {
             if (rs.next()) {
                 pid=rs.getInt("Product_id");
             }

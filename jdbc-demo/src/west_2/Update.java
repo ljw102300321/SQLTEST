@@ -4,14 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.sql.*;
 public class Update {
 
     //更改商品需求量
     public static void updateNeed(int oid,String pname,int num,String func) throws SQLException, ClassNotFoundException {
         //如果func不符合else if语句内容的任何一项，默认是增加
-        int stock=0;
         String pid="x";
         double price=0;
         String sql1="select product_id,Product_Price from product where product_Name=?";
@@ -24,22 +21,19 @@ public class Update {
         Connection conn= GetConn.getConnection();
         PreparedStatement pstmt1=conn.prepareStatement(sql1);
         pstmt1.setString(1,pname);
-        try {
+        try(ResultSet rs=pstmt1.executeQuery()) {
             conn.setAutoCommit(false);
-            ResultSet rs=pstmt1.executeQuery();
             if(rs.next()) {
                 pid= rs.getString("product_id");
                 price=rs.getDouble("product_price");
             }
-            rs.close();
             updateOrderprice(sql3,price,num,oid);//执行sql3
             updateQuantity(sql2,num,oid,pid);//执行sql2
             if(func.equals("decrease")) updateStock(pname,num,"increase");//更改库存
             else updateStock(pname,num,"decrease");
 
             conn.commit();
-            }
-        catch (Exception e){
+        } catch (Exception e){
             conn.rollback();
             System.out.println("更新商品需求失败");
             throw new MyfunctionException();
@@ -51,7 +45,7 @@ public class Update {
     }
 
     public static void updateQuantity(String sql,int num,int oid,String pid) throws SQLException, ClassNotFoundException {
-        String sql2="update product_order set quantity=quantity+? where Order_id=? and Product_id=-?";//默认是增加
+        //String sql2="update product_order set quantity=quantity+? where Order_id=? and Product_id=-?";//默认是增加
         Connection conn= GetConn.getConnection();
         PreparedStatement pstmt=conn.prepareStatement(sql);
         pstmt.setInt(1,num);
@@ -99,13 +93,11 @@ public class Update {
         sql2="update product set Product_Stock=? where Product_id=?";
         PreparedStatement pstmt1=conn.prepareStatement(sql1);
         pstmt1.setString(1,pname);
-        try {
+        try(ResultSet rs=pstmt1.executeQuery()) {
             conn.setAutoCommit(false);
-            ResultSet rs=pstmt1.executeQuery();
             if(rs.next()) {
                 pid= rs.getString("product_id");
             }
-            rs.close();
             updateProductstock(sql2,num,pid);//执行sql2
             conn.commit();
             System.out.println("更新商品库存成功");

@@ -29,17 +29,15 @@ public class Select {
         if (findItem.equals("商品编号")) sql="select * from product_order where Product_id=?";
         PreparedStatement pstmt=conn.prepareStatement(sql);
         pstmt.setString(1,x);
-        try {
-            ResultSet rs=pstmt.executeQuery();
+        try (ResultSet rs=pstmt.executeQuery()){
+
             while (rs.next()) {
                 int pid = rs.getInt("Product_id");
                 int oid= rs.getInt("Order_id");
                 int num= rs.getInt("quantity");
-                //System.out.println(pid + " " + oid + " " + num);
                 if (findItem.equals("商品编号")) hm.put(oid,num);
                 else hm.put(pid,num);
             }
-            rs.close();
         }
         catch (Exception e){
             System.out.println("查询订单细节失败");
@@ -60,8 +58,7 @@ public class Select {
         String sql="select * from order1 where Order_id=?";
         PreparedStatement pstmt=conn1.prepareStatement(sql);
         pstmt.setString(1,OrderId);
-        try {
-            ResultSet rs=pstmt.executeQuery();
+        try (ResultSet rs=pstmt.executeQuery()){
             if (rs.next()) {
                 int id = rs.getInt("Order_id");
                 Double price= rs.getDouble("Order_price");
@@ -71,7 +68,6 @@ public class Select {
                 item.setOrder_price(price+"");
                 HashMap<Integer,Integer>hm=selectProductorder("订单编号",OrderId);
                 item.setHm(hm);
-                rs.close();
             }else{
                 System.out.println("没有订单编号为"+OrderId+"的订单");
                 rs.close();
@@ -97,8 +93,7 @@ public class Select {
         if(pname.matches("\\d+")) sql="select * from product where Product_id=?";
         PreparedStatement pstmt=conn1.prepareStatement(sql);
         pstmt.setString(1,pname);
-        try {
-            ResultSet rs=pstmt.executeQuery();
+        try(ResultSet rs=pstmt.executeQuery()){
             if (rs.next()) {
                 int id=rs.getInt("Product_id");
                 String name=rs.getString("Product_Name");
@@ -108,7 +103,6 @@ public class Select {
                 item.setProduct_name(name);
                 item.setProduct_Stock(stock+"");
                 item.setProduct_price(price+"");
-                rs.close();
             }else{
                 System.out.println("没有商品"+pname);
             }
@@ -128,15 +122,9 @@ public class Select {
         String sql="select Product_id from product where Product_Name=?";
         PreparedStatement pstmt=conn.prepareStatement(sql);
         pstmt.setString(1,name);
-        try {
-            ResultSet rs=pstmt.executeQuery();
-            if(!rs.next()){
-                rs.close();
-                pstmt.close();
-                conn.close();
-            }else {
+        try(ResultSet rs=pstmt.executeQuery()) {
+            if(rs.next()){
                 id = rs.getInt("Product_id");
-                rs.close();
             }
         } catch (Exception e){
             System.out.println("查询商品编号失败");

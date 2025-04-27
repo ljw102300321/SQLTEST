@@ -15,9 +15,7 @@ public class Delete {
         PreparedStatement pstmt=conn.prepareStatement(sql);
         try{
             conn.setAutoCommit(false);
-
             pstmt.setString(1,Oid+"");
-
             rs = pstmt.executeUpdate();//rs=0说明没有找到要删除的订单
             conn.commit();
             if(rs!=0) System.out.println("删除订单成功");
@@ -46,7 +44,6 @@ public class Delete {
         }
         //再判断该商品是否存在在订单中，在订单中的商品无法删除
         if(isInorder(nameOrid)) return -1;//说明这个商品在订单中，无法删除
-
         Connection conn= GetConn.getConnection();
         String sql="delete from product where Product_id=?";
         PreparedStatement pstmt=conn.prepareStatement(sql);
@@ -75,12 +72,10 @@ public class Delete {
         String sql = "select Product_id from product where Product_Name=?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, name);
-        try {
-            ResultSet rs = pstmt.executeQuery();
+        try(ResultSet rs = pstmt.executeQuery()) {
             if (rs.next()) {
                 id = rs.getInt("Product_id");
             }
-            rs.close();
         } catch (Exception e) {
             System.out.println("查询商品失败");
             throw new MyfunctionException();
@@ -92,16 +87,22 @@ public class Delete {
     }
 
     public static boolean isInorder(String id) throws ClassNotFoundException, SQLException {
-        Connection conn1= GetConn.getConnection();
+        Connection conn= GetConn.getConnection();
         String sql1="select * from product_order where Product_id=?";
-        PreparedStatement pstmt1=conn1.prepareStatement(sql1);
-        pstmt1.setString(1,id);
-        ResultSet rs1=pstmt1.executeQuery();
-        if(rs1.next()){
-            rs1.close();
-            pstmt1.close();
-            conn1.close();
-            return true;//说明这个商品在订单中，无法删除
+        PreparedStatement pstmt=conn.prepareStatement(sql1);
+        pstmt.setString(1,id);
+        try (ResultSet rs1=pstmt.executeQuery()) {
+            if (rs1.next()) {
+                rs1.close();
+                pstmt.close();
+                conn.close();
+                return true;//说明这个商品在订单中，无法删除
+            }
+        }catch (Exception e){
+
+        }finally {
+            pstmt.close();
+            conn.close();
         }
         return false;
     }
