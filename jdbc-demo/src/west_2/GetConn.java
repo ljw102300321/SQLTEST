@@ -11,6 +11,5 @@ public class GetConn {
         String username = "root";
         String password = "123456";
         return DriverManager.getConnection(url,username, password);
-
     }
 }
