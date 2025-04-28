@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="JUnit4测试包 (4)">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/jdbc-demo/lib/JUnit4测试包" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/jdbc-demo/lib/JUnit4测试包" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/jdbc-demo/lib/JUnit4测试包" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/jdbc-demo/lib/JUnit4测试包" recursive="false" type="SOURCES" />
+  </library>
+</component>

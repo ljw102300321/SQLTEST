@@ -7,7 +7,6 @@ import java.sql.SQLException;
 public class GetConn {
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        //获取连接
         String url = "jdbc:mysql://localhost:3306/west_2";
         String username = "root";
         String password = "123456";

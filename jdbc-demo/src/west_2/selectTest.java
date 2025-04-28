@@ -1,10 +1,13 @@
 package west_2;
 
+import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 
 public class selectTest {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+   @Test
+   public void test() throws SQLException, ClassNotFoundException {
         //根据订单编号查询订单及其商品信息
         try {
             Order o1=Select.selectOrder("1");
@@ -29,7 +32,6 @@ public class selectTest {
 
         }
 
-
         //根据商品名字查询商品信息->>>>>>>>>只能根据名字查询
         try {
             Product p0=Select.selectProduct("梨");
@@ -45,9 +47,6 @@ public class selectTest {
         }catch (Exception e){
 
         }
-
-
-
         //根据商品编号或订单编号查询商品细节
         try {
             String x="1";
@@ -65,6 +64,5 @@ public class selectTest {
         }catch (Exception e){
 
         }
-
     }
 }

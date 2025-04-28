@@ -4,5 +4,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="JUnit4测试包 (2)" level="application" />
+    <orderEntry type="library" name="JUnit4测试包 (3)" level="project" />
   </component>
 </module>

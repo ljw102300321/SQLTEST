@@ -1,5 +1,7 @@
 package west_2;
 
+import org.junit.Test;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class insertOrderTest {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-
+    @Test
+    public void test(){
         //插入第一个订单
         String s1="订单编号：1\n" +
                 "商品名称：苹果\n" +
@@ -28,7 +30,7 @@ public class insertOrderTest {
 
 
         //重复插入订单，无法插入
-       String s2="订单编号：1\n" +
+        String s2="订单编号：1\n" +
                 "商品名称：苹果\n" +
                 "购买数量：5\n" +
                 "商品名称：梨\n" +
@@ -61,7 +63,7 @@ public class insertOrderTest {
 
         }
         //将不存在的商品删除后
-       String s4="订单编号：2\n" +
+        String s4="订单编号：2\n" +
                 "商品名称：梨\n" +
                 "购买数量：5\n" +
                 "商品名称：橘子\n" +

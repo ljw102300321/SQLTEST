@@ -17,5 +17,8 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="JUnit4测试包" level="project" />
+    <orderEntry type="library" name="JUnit4" level="project" />
+    <orderEntry type="library" name="JUnit4测试包 (4)" level="project" />
   </component>
 </module>

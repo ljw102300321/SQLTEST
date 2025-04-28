@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Insert {
+
     public static void insertProductOrder(String s1) throws ClassNotFoundException, SQLException{
         Pattern pattern = Pattern.compile("商品编号：(.*) 订单编号：(.*) 订单数量：(.*)");
         Matcher matcher = pattern.matcher(s1);
@@ -20,33 +21,37 @@ public class Insert {
             oid1=matcher.group(2);
             quantity1=matcher.group(3);
         }
-        Connection conn= GetConn.getConnection();
-        String sql0="select Product_Price from product where Product_id=?";
-        String sql1="insert into product_order values(?,?,?)";
-        String sql2="update product set Product_Stock=Product_Stock-? where Product_id=?";
-        String sql3="update order1 set Order_price=Order_price+? where Order_id=?";
-        PreparedStatement pstmt0=conn.prepareStatement(sql0);
-
-        try(ResultSet rs=pstmt0.executeQuery()){
-            conn.setAutoCommit(false);
-            pstmt0.setString(1,pid1);
-            double pprice=0;
-            if (rs.next()) {
-                pprice= rs.getDouble("Product_Price");
+        if (isInorder(pid1,oid1)){
+            String pname=getPname(pid1);
+            Update.updateNeed(Integer.parseInt(oid1),pname,Integer.parseInt(quantity1),"increase");
+        }else{
+            Connection conn= GetConn.getConnection();
+            String sql0="select Product_Price from product where Product_id=?";
+            String sql1="insert into product_order values(?,?,?)";
+            String sql2="update product set Product_Stock=Product_Stock-? where Product_id=?";
+            String sql3="update order1 set Order_price=Order_price+? where Order_id=?";
+            PreparedStatement pstmt0=conn.prepareStatement(sql0);
+            try(ResultSet rs=pstmt0.executeQuery()){
+                conn.setAutoCommit(false);
+                pstmt0.setString(1,pid1);
+                double pprice=0;
+                if (rs.next()) {
+                    pprice= rs.getDouble("Product_Price");
+                }
+                insertPo(sql1,Integer.parseInt(pid1),oid1,quantity1);//执行sql1
+                updateProduct(sql2,quantity1, Integer.parseInt(pid1));//执行sql2
+                updateOrderprice(sql3,quantity1,pprice,oid1);//执行sql3
+                conn.commit();
+                System.out.println("插入订单成功");
             }
-            insertPo(sql1,Integer.parseInt(pid1),oid1,quantity1);//执行sql1
-            updateProduct(sql2,quantity1, Integer.parseInt(pid1));//执行sql2
-            updateOrderprice(sql3,quantity1,pprice,oid1);//执行sql3
-            conn.commit();
-            System.out.println("插入订单成功");
-        }
-        catch (Exception e){
-            System.out.println(" 插入订单出错");
-            conn.rollback();
-            throw new MyfunctionException();
-        }
-        finally {
-            conn.close();
+            catch (Exception e){
+                System.out.println(" 插入订单出错");
+                conn.rollback();
+                throw new MyfunctionException();
+            }
+            finally {
+                conn.close();
+            }
         }
     }
 
@@ -222,6 +227,44 @@ public class Insert {
             conn.close();
         }
         return pid;
+    }
+    public static boolean isInorder(String pid,String oid) throws ClassNotFoundException, SQLException {
+        int a=0;
+        Connection conn= GetConn.getConnection();
+        String sql="select * from product_order where Product_id=? and Order_id=?";
+        PreparedStatement pstmt=conn.prepareStatement(sql);
+        pstmt.setString(1,pid);
+        pstmt.setString(2,oid);
+        try(ResultSet rs=pstmt.executeQuery()){
+            if (rs.next()) {
+                a=1;
+            }
+        }catch (Exception e){
+            throw new MyfunctionException();
+        }
+        finally {
+            conn.close();
+        }
+        if (a==1) return true;
+        return false;
+    }
+    public static String getPname(String pid) throws SQLException, ClassNotFoundException {
+        String sql = "select Product_Name from product where Product_id=?";
+        String name="noThing";
+        Connection conn = GetConn.getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1,pid);
+        try(ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                name=rs.getString("Product_Name");
+            }
+        } catch (Exception e) {
+            throw new MyfunctionException();
+        } finally {
+            pstmt.close();
+            conn.close();
+        }
+        return name;
     }
 }
 

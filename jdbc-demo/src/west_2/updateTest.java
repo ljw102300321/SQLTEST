@@ -1,9 +1,12 @@
 package west_2;
 
+import org.junit.Test;
+
 import java.sql.SQLException;
 
 public class updateTest {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+   @Test
+   public void test() throws SQLException, ClassNotFoundException {
        try {
            Update.updateStock("苹果",200,"set");
        }catch (Exception e){
