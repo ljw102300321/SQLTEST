@@ -53,7 +53,6 @@ public class Delete {
         }
         catch (Exception e){
             conn.rollback();
-            System.out.println("删除商品失败");
             throw new MyfunctionException();
         }
         finally {
