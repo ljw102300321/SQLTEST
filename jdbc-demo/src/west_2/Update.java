@@ -35,7 +35,6 @@ public class Update {
             conn.commit();
         } catch (Exception e){
             conn.rollback();
-            System.out.println("更新商品需求失败");
             throw new MyfunctionException();
         }
         finally {
@@ -104,7 +103,6 @@ public class Update {
         }
         catch (Exception e){
             conn.rollback();
-            System.out.println("更新商品库存失败");
             throw new MyfunctionException();
         }
         finally {

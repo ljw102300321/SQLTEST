@@ -40,7 +40,6 @@ public class Select {
             }
         }
         catch (Exception e){
-            System.out.println("查询订单细节失败");
             throw new MyfunctionException();
         }
         finally {
@@ -76,7 +75,6 @@ public class Select {
                 return new Order();
             }
         } catch (Exception e){
-            System.out.println("查询订单失败");
             throw new MyfunctionException();
         } finally {
             pstmt.close();
@@ -107,7 +105,6 @@ public class Select {
                 System.out.println("没有商品"+pname);
             }
         } catch (Exception e){
-            System.out.println("查询商品失败");
             throw new MyfunctionException();
         } finally {
             pstmt.close();
@@ -127,7 +124,6 @@ public class Select {
                 id = rs.getInt("Product_id");
             }
         } catch (Exception e){
-            System.out.println("查询商品编号失败");
             throw new MyfunctionException();
         } finally {
             pstmt.close();

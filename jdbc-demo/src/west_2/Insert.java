@@ -45,7 +45,6 @@ public class Insert {
                 System.out.println("插入订单成功");
             }
             catch (Exception e){
-                System.out.println(" 插入订单出错");
                 conn.rollback();
                 throw new MyfunctionException();
             }
@@ -92,7 +91,6 @@ public class Insert {
            System.out.println("插入订单成功");
        }
        catch (Exception e){
-           System.out.println(" 插入订单出错");
            conn.rollback();
            throw new MyfunctionException();
        }
@@ -128,7 +126,6 @@ public class Insert {
             System.out.println("插入新商品成功");
         }
         catch (Exception e){
-            System.out.println("插入新商品失败");
             conn.rollback();
             throw new MyfunctionException();
         }

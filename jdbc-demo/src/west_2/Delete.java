@@ -21,7 +21,6 @@ public class Delete {
         }
         catch (Exception e){
             conn.rollback();
-            System.out.println("删除订单失败");
             throw new MyfunctionException();
         }
         finally {
@@ -74,7 +73,6 @@ public class Delete {
                 id = rs.getInt("Product_id");
             }
         } catch (Exception e) {
-            System.out.println("查询商品失败");
             throw new MyfunctionException();
         } finally {
             pstmt.close();

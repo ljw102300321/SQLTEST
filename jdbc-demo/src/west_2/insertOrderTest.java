@@ -2,12 +2,6 @@ package west_2;
 
 import org.junit.Test;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class insertOrderTest {
     @Test
@@ -25,7 +19,7 @@ public class insertOrderTest {
         try{
             Insert.insertOrder(s1);
         }catch (Exception e){
-
+            System.out.println("插入订单失败");
         }
 
 
@@ -43,7 +37,7 @@ public class insertOrderTest {
         try{
             Insert.insertOrder(s2);
         }catch (Exception e){
-
+            System.out.println("插入订单失败");
         }
 
         //插入的订单中有不存在的商品，无法插入
@@ -60,7 +54,7 @@ public class insertOrderTest {
         try{
             Insert.insertOrder(s3);
         }catch (Exception e){
-
+            System.out.println("插入订单失败");
         }
         //将不存在的商品删除后
         String s4="订单编号：2\n" +
@@ -74,7 +68,7 @@ public class insertOrderTest {
         try{
             Insert.insertOrder(s4);
         }catch (Exception e){
-
+            System.out.println("插入订单失败");
         }
         //购买数量小于0，无法插入
         String s5="订单编号：3\n" +
@@ -88,7 +82,7 @@ public class insertOrderTest {
         try{
             Insert.insertOrder(s5);
         }catch (Exception e){
-
+            System.out.println("插入订单失败");
         }
         String s6="订单编号：3\n" +
                 "商品名称：梨\n" +
@@ -101,7 +95,7 @@ public class insertOrderTest {
         try{
             Insert.insertOrder(s6);
         }catch (Exception e){
-
+            System.out.println("插入订单失败");
         }
         //订单总价不能小于0
         String s7="订单编号：4\n" +
@@ -115,7 +109,7 @@ public class insertOrderTest {
         try{
             Insert.insertOrder(s7);
         }catch (Exception e){
-
+            System.out.println("插入订单失败");
         }
 
 
@@ -130,7 +124,7 @@ public class insertOrderTest {
         try{
             Insert.insertOrder(s8);
         }catch (Exception e){
-
+            System.out.println("插入订单失败");
         }
     }
 }
