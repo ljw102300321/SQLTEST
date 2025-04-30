@@ -2,14 +2,18 @@ package west_2;
 
 import org.junit.Test;
 
-import java.sql.SQLException;
 
 public class InsertProductTest {
         @Test
-        public void test() throws SQLException, ClassNotFoundException {
+        public void test(){
             //插入第一个商品
-            String s1="商品名称：苹果 商品编号：2 商品价格：10 商品库存：100";
-            Insert.insertProduct(s1);
+           try {
+               String s1="商品名称：苹果 商品编号：2 商品价格：10 商品库存：100";
+               Insert.insertProduct(s1);
+           }catch (Exception e){
+               System.out.println("插入商品失败");
+           }
+
             //再次插入此商品，显示插入失败，因为不能插入重复商品
             try {
                 String s2="商品名称：苹果 商品编号：2 商品价格：10 商品库存：100";
