@@ -3,7 +3,7 @@ package west_2;
 import org.junit.Test;
 
 
-public class updateTest {
+public class UpdateTest {
    @Test
    public void test(){
        try {

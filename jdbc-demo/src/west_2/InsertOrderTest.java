@@ -3,7 +3,7 @@ package west_2;
 import org.junit.Test;
 
 
-public class insertOrderTest {
+public class InsertOrderTest {
     @Test
     public void test(){
         //插入第一个订单

@@ -3,7 +3,7 @@ package west_2;
 import org.junit.Test;
 
 
-public class insertproductorderTest {
+public class InsertProductOrderTest {
    @Test
    public void test() {
        try {

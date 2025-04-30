@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 
-public class insertproductTest {
+public class InsertProductTest {
         @Test
         public void test() throws SQLException, ClassNotFoundException {
             //插入第一个商品

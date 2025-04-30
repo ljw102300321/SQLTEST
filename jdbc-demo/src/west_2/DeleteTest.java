@@ -2,11 +2,10 @@ package west_2;
 
 import org.junit.Test;
 
-import java.sql.SQLException;
 
-public class deleteTest {
+public class DeleteTest {
   @Test
-  public void test() throws SQLException, ClassNotFoundException {
+  public void test(){
       //在订单中存在，无法删除，返回-1
       try {
           int x=Delete.deleteProduct("苹果");

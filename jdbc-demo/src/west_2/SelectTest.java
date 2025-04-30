@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-public class selectTest {
+public class SelectTest {
    @Test
    public void test(){
         //根据订单编号查询订单及其商品信息
