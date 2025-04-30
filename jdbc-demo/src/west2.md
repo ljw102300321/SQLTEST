@@ -72,7 +72,6 @@ create table product_order (<br>
 Product_id int not null comment '商品编号',<br>
 Order_id int not null comment '订单编号',<br>
 quantity int not null comment '商品需求',<br>
-primary key (Product_id, Order_id),<br>
 foreign key (Product_id) references product(Product_id),<br>
 foreign key (Order_id) references order1(Order_id)<br>
 on delete cascade<br>
@@ -170,4 +169,4 @@ add constraint chk_quantity check (product_order.quantity > 0);
 ##### 执行：delete from product_order where Order_id=? and Product_id=?;
 
 # 测试结果
-## 编写insertTest,deleteTest,updateTest,selectTest来测试各个方法
+## 编写InsertOrderTest,InsertProductOrderTest,InsertProductTest,mDeleteTest,UpdateTest,SelectTest来测试各个方法
