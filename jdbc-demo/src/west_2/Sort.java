@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Sort {
     public static ArrayList<Product> sortProduct(String Item, String function) throws SQLException, ClassNotFoundException {
@@ -43,17 +44,21 @@ public class Sort {
     public static ArrayList<Order> sortOrder(String Item, String function) throws SQLException, ClassNotFoundException {
         ArrayList<Order> list=new ArrayList<>();
         Connection conn= GetConn.getConnection();
-        String sql="select Order_id,Order_time,Order_status from orders order by Order_id asc";
+        String sql="select Order_id,Order_date,Order_price from order1 order by Order_id asc";
         if(function.equals("desc")||function.equals("asc")){
             if(Item.equals("Order_id")||Item.equals("Order_date")){
-                sql="select Order_id,Order_time,Order_status from orders order by "+Item+" "+function;
+                sql="select Order_id,Order_date,Order_price from order1 order by "+Item+" "+function;
                 PreparedStatement pstmt=conn.prepareStatement(sql);
+                System.out.println(sql);
                 try(ResultSet rs=pstmt.executeQuery()){
                     conn.setAutoCommit(false);
+
                     int id=rs.getInt("Order_id");
                     String date=rs.getString("Order_date");
                     String price=rs.getString("Order_price");
+
                     Order item=new Order();
+
                     item.setOrder_id(id+"");
                     item.setOrder_date(date);
                     item.setOrder_price(price);

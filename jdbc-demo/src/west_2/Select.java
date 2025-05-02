@@ -51,13 +51,14 @@ public class Select {
 
     public static Order selectOrder(String OrderId) throws SQLException, ClassNotFoundException{
         //订单不存在->Order全部为null
-        //订单存在但是没有内容->Order的hm为null
+
         Order item=new Order();
-        Connection conn1= GetConn.getConnection();
-        String sql="select * from order1 where Order_id=?";
-        PreparedStatement pstmt=conn1.prepareStatement(sql);
+        Connection conn= GetConn.getConnection();
+        String sql="select Order_id,Order_date,Order_price from order1 where Order_id=?";
+        PreparedStatement pstmt=conn.prepareStatement(sql);
         pstmt.setString(1,OrderId);
         try (ResultSet rs=pstmt.executeQuery()){
+            //System.out.println(OrderId);
             if (rs.next()) {
                 int id = rs.getInt("Order_id");
                 Double price= rs.getDouble("Order_price");
@@ -67,18 +68,12 @@ public class Select {
                 item.setOrder_price(price+"");
                 HashMap<Integer,Integer>hm=selectProductorder("订单编号",OrderId);
                 item.setHm(hm);
-            }else{
-                System.out.println("没有订单编号为"+OrderId+"的订单");
-                rs.close();
-                pstmt.close();
-                conn1.close();
-                return new Order();
             }
         } catch (Exception e){
             throw new MyfunctionException();
         } finally {
             pstmt.close();
-            conn1.close();
+            conn.close();
         }
         return item;
     }

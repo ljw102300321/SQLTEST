@@ -9,7 +9,7 @@ public class SelectTest {
    public void test(){
         //根据订单编号查询订单及其商品信息
         try {
-            Order o1=Select.selectOrder("1");
+            Order o1=Select.selectOrder("3");
             System.out.println(o1);
         }catch (Exception e){
             System.out.println("查询订单失败");
