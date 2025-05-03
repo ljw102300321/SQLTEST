@@ -23,14 +23,6 @@ public class SelectTest {
             System.out.println("查询订单失败");
         }
 
-        //查询存在但无商品的订单
-        try {
-            Order o3=Select.selectOrder("11");
-            System.out.println(o3);
-        }catch (Exception e){
-            System.out.println("查询订单失败");
-        }
-
         //根据商品名字查询商品信息->>>>>>>>>只能根据名字查询
         try {
             Product p0=Select.selectProduct("梨");

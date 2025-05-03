@@ -24,7 +24,7 @@ public class DeleteTest {
 
       //存在且不在订单中，返回1
       try {
-          int z=Delete.deleteProduct("橘子");
+          int z=Delete.deleteProduct("鸡蛋");
           System.out.println(z);
       }catch (Exception e){
           System.out.println("删除商品失败");

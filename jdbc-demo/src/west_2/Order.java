@@ -55,7 +55,7 @@ public class Order {
         String quantity="";
         StringBuilder sb=new StringBuilder();
    if(this.hm==null){
-       sb.append("没有商品 ");
+       sb.append(" ");
    }else{
        //遍历HM获取键和值
        for (Integer x : hm.keySet()) {
