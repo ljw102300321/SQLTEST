@@ -57,7 +57,7 @@ public class InsertOrderTest {
             System.out.println("插入订单失败");
         }
         //将不存在的商品删除后
-        String s4="订单编号：2\n" +
+        String s4="订单编号：5\n" +
                 "商品名称：梨\n" +
                 "购买数量：5\n" +
                 "商品名称：橘子\n" +
